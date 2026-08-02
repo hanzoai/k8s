@@ -1,0 +1,223 @@
+{
+  "name": "k8s",
+  "routes": [
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/access/can",
+      "op": "k8s_access_can"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/clusters",
+      "op": "k8s_clusters_list"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/clusters",
+      "op": "k8s_clusters_register"
+    },
+    {
+      "method": "DELETE",
+      "pattern": "/v1/k8s/clusters/:cluster",
+      "op": "k8s_clusters_deregister"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/clusters/:cluster",
+      "op": "k8s_clusters_get"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/clusters/:cluster/status",
+      "op": "k8s_clusters_status"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/jobs",
+      "op": "k8s_jobs_list"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/jobs",
+      "op": "k8s_jobs_create"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/jobs/:namespace/:name",
+      "op": "k8s_jobs_get"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/metrics/pods",
+      "op": "k8s_metrics_pods"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/namespaces",
+      "op": "k8s_namespaces_list"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/namespaces",
+      "op": "k8s_namespaces_ensure"
+    },
+    {
+      "method": "DELETE",
+      "pattern": "/v1/k8s/namespaces/:namespace",
+      "op": "k8s_namespaces_delete"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/namespaces/:namespace",
+      "op": "k8s_namespaces_get"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/nodes",
+      "op": "k8s_nodes_list"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/nodes/:node/cordon",
+      "op": "k8s_nodes_cordon"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/nodes/volume-stats",
+      "op": "k8s_nodes_volume_stats"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/pods",
+      "op": "k8s_pods_list"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/pods/:namespace/:pod/logs",
+      "op": "k8s_pods_logs"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/resources",
+      "op": "k8s_resources_list"
+    },
+    {
+      "method": "PUT",
+      "pattern": "/v1/k8s/resources",
+      "op": "k8s_resources_apply"
+    },
+    {
+      "method": "DELETE",
+      "pattern": "/v1/k8s/resources/:kind/:namespace/:name",
+      "op": "k8s_resources_delete"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/resources/:kind/:namespace/:name",
+      "op": "k8s_resources_get"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/resources/watch",
+      "op": "k8s_resources_watch"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/volumes/claims",
+      "op": "k8s_volumes_list_claims"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/volumes/claims",
+      "op": "k8s_volumes_ensure_claim"
+    },
+    {
+      "method": "POST",
+      "pattern": "/v1/k8s/volumes/claims/:namespace/:name/expand",
+      "op": "k8s_volumes_expand_claim"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/volumes/persistent",
+      "op": "k8s_volumes_list_persistent"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/configmaps",
+      "op": "k8s_workloads_list_configmaps"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/deployments",
+      "op": "k8s_workloads_list_deployments"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/deployments/:namespace/:name",
+      "op": "k8s_workloads_get_deployment"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/events",
+      "op": "k8s_workloads_list_events"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/ingresses",
+      "op": "k8s_workloads_list_ingresses"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/replicasets",
+      "op": "k8s_workloads_list_replicasets"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/services",
+      "op": "k8s_workloads_list_services"
+    },
+    {
+      "method": "GET",
+      "pattern": "/v1/k8s/workloads/statefulsets",
+      "op": "k8s_workloads_list_statefulsets"
+    }
+  ],
+  "ops": [
+    "k8s_access_can",
+    "k8s_clusters_deregister",
+    "k8s_clusters_get",
+    "k8s_clusters_list",
+    "k8s_clusters_register",
+    "k8s_clusters_status",
+    "k8s_jobs_create",
+    "k8s_jobs_get",
+    "k8s_jobs_list",
+    "k8s_metrics_pods",
+    "k8s_namespaces_delete",
+    "k8s_namespaces_ensure",
+    "k8s_namespaces_get",
+    "k8s_namespaces_list",
+    "k8s_nodes_cordon",
+    "k8s_nodes_list",
+    "k8s_nodes_volume_stats",
+    "k8s_pods_list",
+    "k8s_pods_logs",
+    "k8s_resources_apply",
+    "k8s_resources_delete",
+    "k8s_resources_get",
+    "k8s_resources_list",
+    "k8s_resources_watch",
+    "k8s_volumes_ensure_claim",
+    "k8s_volumes_expand_claim",
+    "k8s_volumes_list_claims",
+    "k8s_volumes_list_persistent",
+    "k8s_workloads_get_deployment",
+    "k8s_workloads_list_configmaps",
+    "k8s_workloads_list_deployments",
+    "k8s_workloads_list_events",
+    "k8s_workloads_list_ingresses",
+    "k8s_workloads_list_replicasets",
+    "k8s_workloads_list_services",
+    "k8s_workloads_list_statefulsets"
+  ]
+}

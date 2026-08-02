@@ -1,0 +1,131 @@
+# The union of Kubernetes privilege this service needs — the first written statement of
+# it anywhere in the fleet.
+#
+# Before this file existed, the only RBAC in tree granted a namespaced Role with
+# `pods: [get, list, watch]`, which covered a writer-set membership check and NONE of the
+# namespace-create, custom-resource-write, Job-create, node-patch, claim-patch or
+# pod-evict operations the code performed. The rest was granted out of tree, so there was
+# no auditable statement of the privilege the fleet actually held — and one consumer
+# compensated at run time with a SelfSubjectAccessReview, asking the apiserver instead of
+# asserting the grant.
+#
+# This file is that statement, and it is a CEILING: every verb here is one a named op in
+# this repo performs, and every op in this repo performs only verbs here. `ops.Kinds()`
+# and the `resources` rules below are gated against each other by the test suite, so a
+# kind added to the code without a rule here fails the build rather than 403-ing in
+# production.
+#
+# `""/secrets` is DELIBERATELY ABSENT and its absence is load-bearing. Material reaches a
+# namespace as a KMSSecret custom resource the kms-operator resolves; nothing in this
+# service reads a Secret back, because an RPC that returns a tenant's Secret is a
+# credential-exfiltration endpoint however carefully it is gated. The standing rule is
+# that credentials live in KMS, and this is what enforcing it looks like at the cluster.
+#
+# `nodes/proxy` is granted for ONE named op — nodes.volumeStats, the kubelet fill sweep —
+# and appears in its own rule so that fact is visible in a diff. It is effectively
+# arbitrary kubelet access, and it is the single largest privilege here. A deployment that
+# does not use the volume board should delete that rule; nothing else needs it.
+#
+# On a SHARED cluster, do NOT grant this ClusterRole to a tenant. Bind a namespaced Role
+# with the tenant's own namespaces instead, and register the cluster for that org with a
+# `namespaces` bound — the registry refuses a namespace outside it before the apiserver is
+# dialed, and this RBAC refuses it again.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hanzo-k8s
+  labels:
+    app.kubernetes.io/name: hanzo-k8s
+    app.kubernetes.io/managed-by: hanzo-cloud
+rules:
+  # namespaces.{list,get,ensure,delete}
+  - apiGroups: [""]
+    resources: [namespaces]
+    verbs: [get, list, create, delete]
+
+  # pods.list, pods.logs, and the eviction half of nodes.cordon.
+  # `delete` is absent: a drain evicts, and an eviction respects PodDisruptionBudgets
+  # while a delete does not.
+  - apiGroups: [""]
+    resources: [pods, pods/log]
+    verbs: [get, list, watch]
+  - apiGroups: [""]
+    resources: [pods/eviction]
+    verbs: [create]
+
+  # workloads.listServices, workloads.listEvents, workloads.listConfigMaps
+  - apiGroups: [""]
+    resources: [services, events, configmaps]
+    verbs: [get, list, watch]
+
+  # volumes.listPersistent — cluster-scoped, read only. Nothing deletes a PersistentVolume.
+  - apiGroups: [""]
+    resources: [persistentvolumes]
+    verbs: [list]
+
+  # volumes.{listClaims,ensureClaim,expandClaim}. `delete` is absent on purpose: a claim
+  # holds the only copy of the tenant's data, so this service can make one bigger and
+  # nothing else.
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    verbs: [get, list, create, patch]
+
+  # nodes.list and the cordon half of nodes.cordon. `patch` reaches only
+  # spec.unschedulable in this codebase — there is no generic node-patch op.
+  - apiGroups: [""]
+    resources: [nodes]
+    verbs: [get, list, watch, patch]
+
+  # nodes.volumeStats ONLY. See the note above.
+  - apiGroups: [""]
+    resources: [nodes/proxy]
+    verbs: [get]
+
+  # workloads.{listDeployments,getDeployment,listReplicaSets,listStatefulSets}
+  - apiGroups: [apps]
+    resources: [deployments, replicasets, statefulsets]
+    verbs: [get, list, watch]
+
+  # workloads.listIngresses
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses]
+    verbs: [get, list, watch]
+
+  # jobs.{create,list,get}
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get, list, create]
+
+  # metrics.pods
+  - apiGroups: [metrics.k8s.io]
+    resources: [pods]
+    verbs: [list]
+
+  # access.can — asking the cluster what this credential may do, rather than asserting it.
+  - apiGroups: [authorization.k8s.io]
+    resources: [selfsubjectaccessreviews]
+    verbs: [create]
+
+  # resources.* over the CLOSED kind set. One rule per group, and the resource lists here
+  # are gated against ops.Kinds() by the test suite — two sources, one set.
+  - apiGroups: [hanzo.ai]
+    resources: [apps, datastores, ingressroutes, middlewares]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [apps.hanzo.ai]
+    resources: [applications]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [argoproj.io]
+    resources: [appprojects]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [node.lux.cloud]
+    resources: [luxnetworks]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [trainer.kubeflow.org]
+    resources: [trainjobs]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [serving.kserve.io]
+    resources: [inferenceservices]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [secrets.lux.network]
+    resources: [kmssecrets]
+    verbs: [get, list, watch, create, update, patch, delete]

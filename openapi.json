@@ -1,0 +1,3058 @@
+{
+  "components": {
+    "schemas": {
+      "ApplyIn": {
+        "properties": {
+          "cluster": {
+            "description": "Cluster is the registered cluster to apply to.",
+            "type": "string"
+          },
+          "kind": {
+            "description": "Kind is the registered kind.",
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are merged onto the object.",
+            "type": "object"
+          },
+          "name": {
+            "description": "Name is the object's name.",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace is where the object lives; empty for a cluster-scoped kind.",
+            "type": "string"
+          },
+          "spec": {
+            "additionalProperties": {
+              "type": "object"
+            },
+            "description": "Spec is the desired spec, applied whole.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "cluster",
+          "kind",
+          "name",
+          "spec"
+        ],
+        "type": "object"
+      },
+      "Can": {
+        "properties": {
+          "allowed": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "CanIn": {
+        "properties": {
+          "cluster": {
+            "description": "Cluster is the registered cluster to ask.",
+            "type": "string"
+          },
+          "group": {
+            "description": "Group is the API group; empty for the core group.",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace scopes the question; empty asks cluster-wide.",
+            "type": "string"
+          },
+          "resource": {
+            "description": "Resource is the plural resource name (\"pods\", \"resourcequotas\").",
+            "type": "string"
+          },
+          "verb": {
+            "description": "Verb is the Kubernetes verb: \"get\", \"list\", \"create\", \"patch\", \"delete\", …",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster",
+          "verb",
+          "resource"
+        ],
+        "type": "object"
+      },
+      "Change": {
+        "properties": {
+          "resource": {
+            "$ref": "#/components/schemas/Resource"
+          },
+          "type": {
+            "description": "Type is \"ADDED\", \"MODIFIED\" or \"DELETED\".",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Changes": {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/Change"
+            },
+            "type": "array"
+          },
+          "expired": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Claim": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "requestGi": {
+            "description": "RequestGi is the size the claim asks for, in GiB.",
+            "type": "integer"
+          },
+          "storageClass": {
+            "type": "string"
+          },
+          "volume": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Claims": {
+        "properties": {
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/Claim"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Clusters": {
+        "properties": {
+          "clusters": {
+            "items": {
+              "$ref": "#/components/schemas/Registered"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ConfigMap": {
+        "properties": {
+          "data": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ConfigMaps": {
+        "properties": {
+          "configMaps": {
+            "items": {
+              "$ref": "#/components/schemas/ConfigMap"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "CordonIn": {
+        "properties": {
+          "cluster": {
+            "description": "Cluster is the registered cluster the node belongs to.",
+            "type": "string"
+          },
+          "drain": {
+            "description": "Drain evicts the node's pods after cordoning. Ignored when Schedulable is\ntrue, because draining a node you just returned to service is incoherent.",
+            "type": "boolean"
+          },
+          "node": {
+            "description": "Node is the node's name.",
+            "type": "string"
+          },
+          "schedulable": {
+            "description": "Schedulable is the state to leave the node in: false cordons it, true\nuncordons it.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cluster",
+          "node"
+        ],
+        "type": "object"
+      },
+      "Cordoned": {
+        "properties": {
+          "evicted": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Deleted": {
+        "properties": {
+          "removed": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "Deregistered": {
+        "properties": {
+          "removed": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "EnsureClaimIn": {
+        "properties": {
+          "accessMode": {
+            "description": "AccessMode is \"ReadWriteOnce\" (default) or \"ReadWriteMany\".",
+            "type": "string"
+          },
+          "cluster": {
+            "description": "Cluster is the registered cluster to create the claim on.",
+            "type": "string"
+          },
+          "gi": {
+            "description": "Gi is the storage to request, in GiB.",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Name is the claim's name.",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace is where the claim lives.",
+            "type": "string"
+          },
+          "storageClass": {
+            "description": "StorageClass names the class; empty takes the cluster's default.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster",
+          "namespace",
+          "name",
+          "gi"
+        ],
+        "type": "object"
+      },
+      "EnsureNamespaceIn": {
+        "properties": {
+          "cluster": {
+            "description": "Cluster is the registered cluster to create the namespace on.",
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are merged onto the namespace when it is created.",
+            "type": "object"
+          },
+          "namespace": {
+            "description": "Namespace is the namespace's name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster",
+          "namespace"
+        ],
+        "type": "object"
+      },
+      "Ensured": {
+        "properties": {
+          "created": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Event": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lastSeen": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Events": {
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/Event"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ExpandClaimIn": {
+        "properties": {
+          "cluster": {
+            "description": "Cluster is the registered cluster the claim lives on.",
+            "type": "string"
+          },
+          "gi": {
+            "description": "Gi is the new size in GiB. It must exceed the current request; the\napiserver refuses a shrink and its message is surfaced verbatim.",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Name is the claim's name.",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace is the claim's namespace.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster",
+          "namespace",
+          "name",
+          "gi"
+        ],
+        "type": "object"
+      },
+      "Expanded": {
+        "properties": {
+          "gi": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Ingress": {
+        "properties": {
+          "addresses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "hosts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "tlsHosts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Ingresses": {
+        "properties": {
+          "ingresses": {
+            "items": {
+              "$ref": "#/components/schemas/Ingress"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Job": {
+        "properties": {
+          "active": {
+            "type": "integer"
+          },
+          "endedAt": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "phase": {
+            "description": "Phase is \"running\", \"succeeded\" or \"failed\" — the one word a caller wants,\nrolled here rather than re-derived from three counters by every consumer.",
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "integer"
+          },
+          "succeeded": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "JobIn": {
+        "properties": {
+          "args": {
+            "description": "Args are the arguments passed to the entrypoint.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "backoffLimit": {
+            "description": "BackoffLimit caps retries; zero means the Kubernetes default.",
+            "type": "integer"
+          },
+          "cluster": {
+            "description": "Cluster is the registered cluster to run the job on.",
+            "type": "string"
+          },
+          "command": {
+            "description": "Command replaces the image's entrypoint. Empty keeps it.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "env": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Env is plain environment. Secret material does NOT belong here: seal it in\nKMS and project it with a scoped ServiceAccount instead.",
+            "type": "object"
+          },
+          "image": {
+            "description": "Image is the container image to run.",
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are stamped on the Job and its pods.",
+            "type": "object"
+          },
+          "mounts": {
+            "description": "Mounts attaches existing claims by name at a path.",
+            "items": {
+              "$ref": "#/components/schemas/Mount"
+            },
+            "type": "array"
+          },
+          "name": {
+            "description": "Name is the job's name.",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace is where the job runs.",
+            "type": "string"
+          },
+          "serviceAccount": {
+            "description": "ServiceAccount runs the pod as a named ServiceAccount.",
+            "type": "string"
+          },
+          "ttlSeconds": {
+            "description": "TTLSeconds deletes the finished Job after this long. Zero leaves it, which\non a busy namespace is how a Job list becomes unreadable.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "cluster",
+          "namespace",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "Jobs": {
+        "properties": {
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/Job"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Logs": {
+        "properties": {
+          "log": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Mount": {
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Namespace": {
+        "properties": {
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Namespaces": {
+        "properties": {
+          "namespaces": {
+            "items": {
+              "$ref": "#/components/schemas/Namespace"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Node": {
+        "properties": {
+          "amdGpu": {
+            "type": "integer"
+          },
+          "cpu": {
+            "type": "string"
+          },
+          "instanceKind": {
+            "type": "string"
+          },
+          "internalIp": {
+            "type": "string"
+          },
+          "memory": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nvidiaGpu": {
+            "type": "integer"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "region": {
+            "type": "string"
+          },
+          "schedulable": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "Nodes": {
+        "properties": {
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/Node"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Pod": {
+        "properties": {
+          "claims": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "controller": {
+            "type": "string"
+          },
+          "images": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "node": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "restarts": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "PodMetric": {
+        "properties": {
+          "cpuMilli": {
+            "description": "CPUMilli is CPU use in millicores; MemoryBytes is working-set memory.",
+            "type": "integer"
+          },
+          "memoryBytes": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PodMetrics": {
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "pods": {
+            "items": {
+              "$ref": "#/components/schemas/PodMetric"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Pods": {
+        "properties": {
+          "pods": {
+            "items": {
+              "$ref": "#/components/schemas/Pod"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Reachable": {
+        "properties": {
+          "connected": {
+            "description": "Connected is whether the apiserver answered.",
+            "type": "boolean"
+          },
+          "reason": {
+            "description": "Reason is why it did not, verbatim. Absent on success.",
+            "type": "string"
+          },
+          "version": {
+            "description": "Version is the server version string, when it answered.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RegisterIn": {
+        "properties": {
+          "default": {
+            "description": "Default marks the cluster an org's workloads target when none is named by\na human — the ONE place a default is legitimate, because it is the org's\nown recorded choice rather than a process's ambient neighbour.",
+            "type": "boolean"
+          },
+          "kubeconfig": {
+            "description": "Kubeconfig is the credential, in kubeconfig form. It is validated, used\nonce to prove the cluster is reachable, sealed in KMS, and then dropped:\nit is never written to disk, never logged and never returned.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name is what every later op will call this cluster. Unique within the org.",
+            "type": "string"
+          },
+          "namespaces": {
+            "description": "Namespaces bounds this registration to a namespace set. Omit it when the\norg owns the whole cluster; state it when the credential is a scoped\nServiceAccount on a shared cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "provider": {
+            "description": "Provider labels where the cluster came from (\"doks\", \"byo\", \"k3s\", …).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "kubeconfig"
+        ],
+        "type": "object"
+      },
+      "Registered": {
+        "properties": {
+          "amdGpu": {
+            "type": "integer"
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "endpoint": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespaces": {
+            "description": "Namespaces bounds what this registration may address. Empty means the\nwhole cluster, which is what an org registering its OWN cluster gets.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "nodes": {
+            "type": "integer"
+          },
+          "nvidiaGpu": {
+            "type": "integer"
+          },
+          "org": {
+            "description": "Org is which org OWNS this cluster. On a reply that is a property of the\nrecord, not a claim by the caller.",
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "registered": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Resource": {
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "spec": {
+            "additionalProperties": {
+              "type": "object"
+            },
+            "type": "object"
+          },
+          "status": {
+            "additionalProperties": {
+              "type": "object"
+            },
+            "type": "object"
+          },
+          "version": {
+            "description": "Version is the object's resourceVersion — the cursor a Watch resumes from.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Resources": {
+        "properties": {
+          "resources": {
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "type": "array"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Service": {
+        "properties": {
+          "clusterIp": {
+            "type": "string"
+          },
+          "ips": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "lbId": {
+            "description": "LBID is the provider's load-balancer id, from the cloud-controller's own\nannotation — the strongest link between a Service and a real balancer.",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "ports": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Services": {
+        "properties": {
+          "services": {
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Volume": {
+        "properties": {
+          "capacityGi": {
+            "type": "integer"
+          },
+          "claimName": {
+            "type": "string"
+          },
+          "claimNamespace": {
+            "type": "string"
+          },
+          "handle": {
+            "description": "Handle is the backing device's provider id, when the PV carries one.",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "VolumeStats": {
+        "properties": {
+          "nodesRead": {
+            "description": "NodesRead is how many kubelets answered; NodesTotal how many were asked.",
+            "type": "integer"
+          },
+          "nodesTotal": {
+            "type": "integer"
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/VolumeUse"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "VolumeUse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "usedBytes": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Volumes": {
+        "properties": {
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/Volume"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Workload": {
+        "properties": {
+          "images": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "ready": {
+            "type": "integer"
+          },
+          "replicas": {
+            "type": "integer"
+          },
+          "updated": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Workloads": {
+        "properties": {
+          "workloads": {
+            "items": {
+              "$ref": "#/components/schemas/Workload"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "",
+    "title": "k8s",
+    "version": "0.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/k8s/access/can": {
+      "post": {
+        "description": "Asks a cluster whether this app's own credential may perform one act.\n\nIt is a SelfSubjectAccessReview, which means the answer comes from the cluster's\nRBAC rather than from a grant this app asserts about itself. That distinction is the\nreason the op exists: the union ClusterRole this deployment needs is granted OUT of\ntree, so a drifted or half-applied grant is a real and undetectable condition — and\nasking beats asserting, because a refusal a caller can read is a feature it can\ndegrade gracefully on instead of a 403 arriving in the middle of a mutation.",
+        "operationId": "k8s_access_can",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "verb": "get",
+                "resource": "resourcequotas",
+                "namespace": "acme-prod"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CanIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "allowed": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Can"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Asks a cluster whether this app's own credential may perform one act.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/clusters": {
+      "get": {
+        "description": "Returns every Kubernetes cluster the calling org may reach.\n\nThis is the fleet's ONE cluster list. A row is a real registration — a name, the\nprovider it came from, its apiserver endpoint and the node and accelerator counts\nmeasured when it was attached — and there is no such thing as an unregistered\ncluster this API can see. The credential is never part of a row: it is sealed in\nKMS and resolved only at the moment an op uses it.\n\nThe list is scoped by the caller's org and by nothing the caller can type, so a\ntenant sees its own clusters and no others.",
+        "operationId": "k8s_clusters_list",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "clusters": [
+                    {
+                      "name": "hanzo-k8s",
+                      "org": "hanzo",
+                      "provider": "doks",
+                      "endpoint": "https://k8s.example.com",
+                      "nodes": 6,
+                      "nvidiaGpu": 8,
+                      "amdGpu": 0,
+                      "registered": "2026-07-30T00:00:00Z",
+                      "default": true
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Clusters"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns every Kubernetes cluster the calling org may reach.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "post": {
+        "description": "Attaches a Kubernetes cluster to the calling org and answers 201.\n\nThis is the cluster-registry primitive and the most important operation in this\nAPI: everything else takes a cluster name, and this is where a name comes to\nexist. It is also the whole of BYO-Kubernetes — an org running its own cluster,\nlux running lux-k8s, a customer bringing their own — because a registered cluster\nis a registered cluster whatever provisioned it.\n\nThe kubeconfig is refused if it carries an exec or auth-provider credential\nplugin (either would run a local binary with this process's environment), and\nrefused if its apiserver is not a routable https host. It is then USED, once, to\nprove the cluster answers and to measure its nodes and accelerators; a cluster\nthat cannot be reached is not registered, because the alternative is a row that\nfails at first use when nobody is holding the credential any more. Finally it is\nsealed in KMS under a ref derived from the owning org and the name, and dropped.\nIt is never written to disk, never logged, and no operation returns it.\n\nRegistration is idempotent on name within the org, so re-registering rotates the\ncredential and refreshes the inventory without a second verb.\n\nSet `namespaces` when the credential is a scoped ServiceAccount on a shared\ncluster: the registration is then bounded to those namespaces and every later op\nis refused outside them, before the apiserver is dialed. Omit it when the org owns\nthe whole cluster.",
+        "operationId": "k8s_clusters_register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "lux-k8s",
+                "kubeconfig": "apiVersion: v1\nkind: Config\n...",
+                "provider": "byo",
+                "default": true
+              },
+              "schema": {
+                "$ref": "#/components/schemas/RegisterIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "lux-k8s",
+                  "org": "lux",
+                  "provider": "byo",
+                  "endpoint": "https://k8s.lux.example",
+                  "nodes": 12,
+                  "nvidiaGpu": 32,
+                  "amdGpu": 0,
+                  "registered": "2026-07-30T00:00:00Z",
+                  "default": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Registered"
+                }
+              }
+            },
+            "description": "created"
+          }
+        },
+        "summary": "Attaches a Kubernetes cluster to the calling org and answers 201.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/clusters/{cluster}": {
+      "delete": {
+        "description": "Detaches a cluster from the calling org and destroys its sealed\ncredential.\n\nNothing in the cluster is touched: this removes Hanzo's ability to reach it, not\nthe cluster itself. Deleting a name that is not registered reports removed=false\nrather than failing, so a repeated deregistration is safe.",
+        "operationId": "k8s_clusters_deregister",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "path",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "removed": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Deregistered"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Detaches a cluster from the calling org and destroys its sealed credential.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "get": {
+        "description": "Returns one registered cluster.\n\nA name the calling org has not registered answers 404 — including a name another\norg HAS registered, which is indistinguishable from one that does not exist. That\nis deliberate: a distinguishable refusal would let a tenant enumerate other\ntenants' cluster names one guess at a time.",
+        "operationId": "k8s_clusters_get",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "path",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "lux-k8s",
+                  "org": "lux",
+                  "provider": "byo",
+                  "endpoint": "https://k8s.lux.example",
+                  "nodes": 12,
+                  "nvidiaGpu": 32,
+                  "amdGpu": 0,
+                  "registered": "2026-07-30T00:00:00Z",
+                  "default": false
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Registered"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns one registered cluster.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/clusters/{cluster}/status": {
+      "get": {
+        "description": "Reports whether a registered cluster answers right now.\n\nThe probe is the apiserver's version endpoint, because that is the one read every\ncredential can make regardless of what RBAC it was granted: a registration bounded\nto one namespace would fail a namespace list and look dead while being perfectly\nhealthy. So this answers \"is the credential live and the apiserver reachable\",\nwhich is the question a board asks, and the ops that need a permission ask for\nthat permission themselves.\n\nA cluster that does not answer is connected=false with the reason verbatim — never\nan error, because \"this cluster is down\" is a successful answer to this question.",
+        "operationId": "k8s_clusters_status",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "path",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "connected": true,
+                  "version": "v1.33.1"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Reachable"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Reports whether a registered cluster answers right now.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/jobs": {
+      "get": {
+        "description": "Returns batch Jobs with a rolled-up phase.\n\n`phase` is one word — running, succeeded or failed — computed here rather than left\nto every caller to derive from three counters. Three consumers deriving it three ways\nis three chances to read a failed job as merely unfinished.",
+        "operationId": "k8s_jobs_list",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "jobs": [
+                    {
+                      "namespace": "hanzo",
+                      "name": "build-1a2b",
+                      "active": 0,
+                      "succeeded": 1,
+                      "failed": 0,
+                      "phase": "succeeded",
+                      "startedAt": 1785110400,
+                      "endedAt": 1785110460
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Jobs"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns batch Jobs with a rolled-up phase.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "post": {
+        "description": "Runs one batch Job and answers 201.\n\nThe input is a JOB, not a PodSpec: an image, a command, environment, a service\naccount, labels, and claims to mount. That is the whole of what the fleet's job\ncallers need — an image build, a migration, a scheduled task — and it is deliberately\nnot the Kubernetes PodSpec, because accepting a PodSpec would mean accepting\nhostPath mounts, host networking, privileged security contexts and secret volume\nreferences, i.e. everything a bounded surface exists to exclude.\n\n`env` is PLAIN environment. Secret material must not travel here: seal it in KMS and\ngive the job a ServiceAccount that can reach what it needs. `ttlSeconds` is worth\nsetting on anything periodic — a namespace that keeps every finished Job becomes a\nlist nobody can read.",
+        "operationId": "k8s_jobs_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "namespace": "hanzo",
+                "name": "build-1a2b",
+                "image": "gcr.io/kaniko-project/executor:latest",
+                "args": [
+                  "--context=git://…",
+                  "--destination=registry.hanzo.ai/acme/api:1.4.2"
+                ],
+                "ttlSeconds": 3600
+              },
+              "schema": {
+                "$ref": "#/components/schemas/JobIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "namespace": "hanzo",
+                  "name": "build-1a2b",
+                  "active": 1,
+                  "succeeded": 0,
+                  "failed": 0,
+                  "phase": "running"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            },
+            "description": "created"
+          }
+        },
+        "summary": "Runs one batch Job and answers 201.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/jobs/{namespace}/{name}": {
+      "get": {
+        "description": "Returns one batch Job.",
+        "operationId": "k8s_jobs_get",
+        "parameters": [
+          {
+            "description": "Namespace is the object's namespace.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name is the object's name.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the object lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "namespace": "hanzo",
+                  "name": "build-1a2b",
+                  "active": 0,
+                  "succeeded": 1,
+                  "failed": 0,
+                  "phase": "succeeded",
+                  "startedAt": 1785110400,
+                  "endedAt": 1785110460
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns one batch Job.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/metrics/pods": {
+      "get": {
+        "description": "Returns live CPU and memory use for pods, from metrics.k8s.io.\n\n`available` is the field that carries the honesty. metrics-server is absent from most\nof our clusters, and a cluster without it answers this call with an error — which,\nrendered as zeroes, tells an operator that a busy namespace is idle. So a missing\nmetrics API is reported as available=false with no rows, and a caller must render\n\"unmeasured\" rather than \"0m\".",
+        "operationId": "k8s_metrics_pods",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "example": "acme-prod",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "pods": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api-7d9f-2xk",
+                      "cpuMilli": 250,
+                      "memoryBytes": 536870912
+                    }
+                  ],
+                  "available": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/PodMetrics"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns live CPU and memory use for pods, from metrics.k8s.io.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/namespaces": {
+      "get": {
+        "description": "Returns the namespaces the calling org's registration may address.\n\nFor a registration that owns the whole cluster this is every namespace on it. For\none bounded to a namespace set it is that set, read one namespace at a time — so a\nscoped tenant learns nothing about its neighbours, not even how many there are.",
+        "operationId": "k8s_namespaces_list",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "namespaces": [
+                    {
+                      "name": "acme-prod",
+                      "phase": "Active",
+                      "labels": {
+                        "managed-by": "hanzo-cloud"
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Namespaces"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns the namespaces the calling org's registration may address.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "post": {
+        "description": "Creates a namespace if it is absent, and reports which it did.\n\nFour separate implementations of get-then-create-if-missing collapse into this one\nname. That matters beyond tidiness: each of those four wrote the ladder itself, and\na ladder is a race — \"get said absent\" and \"create\" are two calls, and two callers\nstarting a tenant at once both take the create branch. Here an AlreadyExists from\nthe apiserver is the successful \"it was already there\" answer, so the race has one\noutcome instead of one winner and one error.\n\n`created` is reported because creating a tenant's namespace and finding it are\ndifferent events, and a caller that cannot tell them apart cannot log the first.",
+        "operationId": "k8s_namespaces_ensure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "namespace": "acme-prod",
+                "labels": {
+                  "tier": "pro"
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/EnsureNamespaceIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "acme-prod",
+                  "created": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Ensured"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Creates a namespace if it is absent, and reports which it did.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/namespaces/{namespace}": {
+      "delete": {
+        "description": "Deletes a namespace and everything in it.\n\nThis is the highest blast radius in the whole API: Kubernetes deletes a namespace\nby garbage-collecting every object inside it, including PersistentVolumeClaims,\nwhich for a Delete-reclaim StorageClass destroys the tenant's data. There is no\nundo and no confirmation this API can offer that would make one.\n\nIt is therefore its own named operation, gated separately from every other write,\nand it is refused outright for a registration bounded to a namespace set: a scoped\ncredential exists precisely because the cluster is shared, and \"delete a namespace\non a shared cluster\" is not an authority a tenant holds.",
+        "operationId": "k8s_namespaces_delete",
+        "parameters": [
+          {
+            "description": "Namespace is the namespace's name.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the namespace lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "removed": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Deleted"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Deletes a namespace and everything in it.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "get": {
+        "description": "Returns one namespace.",
+        "operationId": "k8s_namespaces_get",
+        "parameters": [
+          {
+            "description": "Namespace is the namespace's name.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the namespace lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "acme-prod",
+                  "phase": "Active",
+                  "labels": {
+                    "managed-by": "hanzo-cloud"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Namespace"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns one namespace.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/nodes": {
+      "get": {
+        "description": "Returns a cluster's worker nodes: whether each is up, whether it will\ntake new work, and what accelerators it offers.\n\nThis is the one node inventory in the fleet. The GPU counts come from each node's\nallocatable `nvidia.com/gpu` and `amd.com/gpu`, which is what the scheduler will\nactually honour — not a label somebody typed.\n\nNodes are cluster-scoped, so a registration bounded to a namespace set cannot read\nthem: answering would hand one tenant on a shared cluster the whole cluster's\ncapacity.",
+        "operationId": "k8s_nodes_list",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "nodes": [
+                    {
+                      "name": "pool-gpu-a1",
+                      "ready": true,
+                      "schedulable": true,
+                      "region": "nyc3",
+                      "instanceKind": "gpu-h100x8-640gb",
+                      "cpu": "64",
+                      "memory": "755Gi",
+                      "nvidiaGpu": 8,
+                      "amdGpu": 0,
+                      "internalIp": "10.0.0.4"
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Nodes"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns a cluster's worker nodes: whether each is up, whether it will take new work, and what accelerators it offers.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/nodes/volume-stats": {
+      "get": {
+        "description": "Reports how full every mounted volume on a cluster is.\n\nIt is the ONLY source of volume fill we have. Cloud providers do not expose how\nfull a disk is, and metrics-server is absent from most of our clusters — but every\nkubelet serves `stats/summary` unconditionally, so this works everywhere. The read\ngoes through the apiserver's node proxy, which is why this is a SEPARATE named op:\n`nodes/proxy get` is effectively arbitrary kubelet access, and naming it here is\nwhat lets every other operation's grant omit it.\n\nA kubelet that will not answer costs a reading and never the call: fill is\nadvisory, no safety verdict depends on it, and failing the whole sweep over one\nsilent node would block every volume decision on the fleet. `nodesRead` against\n`nodesTotal` is how a caller knows the difference between \"empty\" and\n\"unmeasured\" — a claim with no row is unmeasured, and treating that as empty is\nhow live data gets condemned.",
+        "operationId": "k8s_nodes_volume_stats",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "volumes": [
+                    {
+                      "namespace": "acme",
+                      "name": "data",
+                      "usedBytes": 48318382080
+                    }
+                  ],
+                  "nodesRead": 6,
+                  "nodesTotal": 6
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/VolumeStats"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Reports how full every mounted volume on a cluster is.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/nodes/{node}/cordon": {
+      "post": {
+        "description": "Takes a node out of service, or puts it back, and optionally drains it.\n\nThis is ONE named operation over what is really three calls — patch\n`spec.unschedulable`, list the node's pods, evict each one — because the three are\nonly ever wanted together and a generic \"patch a node\" op would let a caller write\nany field of any node's spec. There is deliberately no such op.\n\nThe drain uses the EVICTION api, not delete: an eviction respects\nPodDisruptionBudgets, so a drain that would break a quorum is REFUSED by the\napiserver and reported verbatim, with the node left cordoned so an operator can\nscale and retry. DaemonSet and static (mirror) pods are skipped — the node\nrecreates them immediately, so evicting them is a loop — and pods already\nterminal are skipped too.\n\n`drain` is ignored when `schedulable` is true, because draining a node you just\nreturned to service is incoherent rather than merely useless.",
+        "operationId": "k8s_nodes_cordon",
+        "parameters": [
+          {
+            "description": "Node is the node's name.",
+            "example": "pool-gpu-a1",
+            "in": "path",
+            "name": "node",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "node": "pool-gpu-a1",
+                "schedulable": false,
+                "drain": true
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CordonIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "evicted": 11
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Cordoned"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Takes a node out of service, or puts it back, and optionally drains it.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/pods": {
+      "get": {
+        "description": "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration door wearing the name of a health check.",
+        "operationId": "k8s_pods_list",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace. Empty means every namespace this\nregistration may address, which for a bounded registration is its own set\nand never the whole cluster.",
+            "example": "acme-prod",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "example": "app=api",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "NodeName narrows to the pods on one node — the field-selector variant the\ndrain path needs, named rather than left to a raw selector string.",
+            "in": "query",
+            "name": "nodeName",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "pods": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api-7d9f-2xk",
+                      "phase": "Running",
+                      "node": "pool-a1",
+                      "controller": "ReplicaSet/api-7d9f",
+                      "images": [
+                        "registry.hanzo.ai/acme/api:1.4.2"
+                      ],
+                      "restarts": 0
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Pods"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns pods, narrowed by namespace, labels or node.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/pods/{namespace}/{pod}/logs": {
+      "get": {
+        "description": "Returns what one container printed.\n\n`tailLines` is the bound a caller should set; without one the read is capped at one\nmebibyte and truncated from the FRONT, so the newest output — the part that\nexplains a crash — is what survives.",
+        "operationId": "k8s_pods_logs",
+        "parameters": [
+          {
+            "description": "Namespace is the pod's namespace.",
+            "example": "acme-prod",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Pod is the pod's name.",
+            "example": "api-7d9f-2xk",
+            "in": "path",
+            "name": "pod",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the pod runs on.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Container names the container; empty takes the pod's only one.",
+            "in": "query",
+            "name": "container",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "TailLines caps how many lines come back, newest last. Zero takes the\nserver's default. A log read is unbounded by nature, so this is the bound.",
+            "example": 200,
+            "in": "query",
+            "name": "tailLines",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "log": "2026-07-30T00:00:01Z listening on :8000\n"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Logs"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns what one container printed.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/resources": {
+      "get": {
+        "description": "Returns custom resources of one registered kind.",
+        "operationId": "k8s_resources_list",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Kind is the registered kind: \"App\", \"Application\", \"Datastore\",\n\"Validator\", \"TrainJob\", \"InferenceService\", \"IngressRoute\", \"Middleware\"\nor \"AppProject\".",
+            "example": "App",
+            "in": "query",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address. Ignored for a cluster-scoped kind.",
+            "example": "acme-prod",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "resources": [
+                    {
+                      "kind": "App",
+                      "namespace": "acme-prod",
+                      "name": "api",
+                      "spec": {
+                        "image": "registry.hanzo.ai/acme/api:1.4.2"
+                      },
+                      "status": {
+                        "phase": "Running"
+                      },
+                      "version": "918273"
+                    }
+                  ],
+                  "version": "918273"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Resources"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns custom resources of one registered kind.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "put": {
+        "description": "Creates one custom resource of a registered kind, or patches the one\nalready there.\n\nFive separate get-then-create-else-patch ladders in the fleet collapse into this one\nname. Each of those wrote the ladder itself and each was a race; here the apiserver\nresolves the race, because a create that loses falls through to the patch.\n\nThe `spec` is the caller's domain payload and is applied whole — its SHAPE belongs to\nwhoever authored the CRD, not to this app, which would otherwise have to be edited\nevery time any kind grew a field. What this app owns is the KIND and the VERB, and\nboth are named and typed. That is the line: `kind` is a key in a closed table, so\nthis cannot become \"apply any object the cluster has\".",
+        "operationId": "k8s_resources_apply",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "kind": "App",
+                "namespace": "acme-prod",
+                "name": "api",
+                "spec": {
+                  "image": "registry.hanzo.ai/acme/api:1.4.2",
+                  "replicas": 3
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ApplyIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "kind": "App",
+                  "namespace": "acme-prod",
+                  "name": "api",
+                  "spec": {
+                    "image": "registry.hanzo.ai/acme/api:1.4.2",
+                    "replicas": 3
+                  },
+                  "version": "918281"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Creates one custom resource of a registered kind, or patches the one already there.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/resources/watch": {
+      "get": {
+        "description": "Returns what changed to one kind since a cursor.\n\nIt is a BOUNDED read rather than a stream, and that is a design decision worth\nstating: a stream cannot cross the call plane as a value, and rendering one —\nServer-Sent Events, a websocket — is the EDGE's concern. A consumer builds its own\nstream by calling this in a loop with the cursor it got back, so the streaming\nshape exists once, in the consumer that renders it, instead of once per transport.\n\n`expired` is the field that matters most. When the cursor is older than the\napiserver's history the watch cannot be resumed, and an empty page would look\nexactly like \"nothing changed\" — which is how a watch-backed board silently stops\nupdating for hours. On `expired` a caller must LIST again and take the new cursor.",
+        "operationId": "k8s_resources_watch",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to watch.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Kind is the registered kind.",
+            "example": "App",
+            "in": "query",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "example": "acme-prod",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Version is the cursor to resume from — the Version a previous list or\nwatch returned. Empty starts from the current state.",
+            "example": "918273",
+            "in": "query",
+            "name": "version",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "WaitSeconds is how long to wait for a change before answering empty.\nClamped to a bound this app owns, so a caller cannot pin a watch open.",
+            "example": 30,
+            "in": "query",
+            "name": "waitSeconds",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "changes": [
+                    {
+                      "type": "MODIFIED",
+                      "resource": {
+                        "kind": "App",
+                        "namespace": "acme-prod",
+                        "name": "api",
+                        "status": {
+                          "phase": "Running"
+                        },
+                        "version": "918280"
+                      }
+                    }
+                  ],
+                  "version": "918280"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Changes"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns what changed to one kind since a cursor.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/resources/{kind}/{namespace}/{name}": {
+      "delete": {
+        "description": "Deletes one custom resource of a registered kind.\n\nDeleting an object is not deleting its data: a workload's App CR is desired state and\ncan be recreated freely, while the PersistentVolumeClaim it mounted holds the only\ncopy of the tenant's data and is a different lifetime. Nothing here deletes a claim.",
+        "operationId": "k8s_resources_delete",
+        "parameters": [
+          {
+            "description": "Kind is the registered kind.",
+            "in": "path",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace is the object's namespace; empty for a cluster-scoped kind.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name is the object's name.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the object lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "removed": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Deleted"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Deletes one custom resource of a registered kind.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "get": {
+        "description": "Returns one custom resource.",
+        "operationId": "k8s_resources_get",
+        "parameters": [
+          {
+            "description": "Kind is the registered kind.",
+            "in": "path",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace is the object's namespace; empty for a cluster-scoped kind.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name is the object's name.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the object lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "kind": "App",
+                  "namespace": "acme-prod",
+                  "name": "api",
+                  "spec": {
+                    "image": "registry.hanzo.ai/acme/api:1.4.2"
+                  },
+                  "status": {
+                    "phase": "Running"
+                  },
+                  "version": "918273"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns one custom resource.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/volumes/claims": {
+      "get": {
+        "description": "Returns PersistentVolumeClaims.",
+        "operationId": "k8s_volumes_list_claims",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "claims": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "data",
+                      "phase": "Bound",
+                      "volume": "pvc-9f2",
+                      "requestGi": 100,
+                      "storageClass": "do-block-storage"
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Claims"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns PersistentVolumeClaims.",
+        "tags": [
+          "k8s"
+        ]
+      },
+      "post": {
+        "description": "Creates a PersistentVolumeClaim if it is absent.\n\nIdempotent on name in the namespace, for the reason ensureNamespace is: the\nget-then-create ladder is a race when each caller writes it.",
+        "operationId": "k8s_volumes_ensure_claim",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "namespace": "acme-prod",
+                "name": "data",
+                "gi": 100,
+                "storageClass": "do-block-storage"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/EnsureClaimIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "data",
+                  "created": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Ensured"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Creates a PersistentVolumeClaim if it is absent.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/volumes/claims/{namespace}/{name}/expand": {
+      "post": {
+        "description": "Grows a PersistentVolumeClaim to a new size.\n\nThis is the ONE correct way to grow a volume Kubernetes manages, and the reason it\nis a named op rather than a patch: the resize controller acts on the CLAIM, growing\nthe backing cloud device and then the filesystem on it, so claim, PersistentVolume,\ndevice and filesystem all end up agreeing. Growing the device through the cloud\nprovider's own API instead leaves the claim and the PV declaring the old capacity\nand the filesystem never grown at all — three sources of truth, two of them wrong.\n\nThe StorageClass must set `allowVolumeExpansion`; when it does not, the apiserver\nrefuses and its message is surfaced verbatim rather than worked around. A shrink is\nrefused by the apiserver too, and there is no op that deletes a claim: the claim\nholds the only copy of the tenant's data, so this app can make one bigger and\nnothing else.",
+        "operationId": "k8s_volumes_expand_claim",
+        "parameters": [
+          {
+            "description": "Namespace is the claim's namespace.",
+            "example": "acme-prod",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name is the claim's name.",
+            "example": "data",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "cluster": "hanzo-k8s",
+                "namespace": "acme-prod",
+                "name": "data",
+                "gi": 200
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ExpandClaimIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "gi": 200
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Expanded"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Grows a PersistentVolumeClaim to a new size.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/volumes/persistent": {
+      "get": {
+        "description": "Returns the cluster's PersistentVolumes.\n\nA PV is where the link to the real cloud device lives: `handle` is the provider's\nown volume id, read from the CSI source or from the legacy flexVolume shape, and it\nis what lets a reconciliation say whether a disk somebody is paying for is attached\nto anything. The claim reference travels with it because a PV with no claim and a PV\nwhose claim is gone are different situations.\n\nPVs are cluster-scoped, so a namespace-bounded registration cannot read them.",
+        "operationId": "k8s_volumes_list_persistent",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster's name — \"hanzo-k8s\", \"lux-k8s\",\n\"zoo-k8s\", \"bootnode-k8s\", or any name an org registered its own cluster\nunder. It is resolved against the CALLING ORG's registry, so two orgs may\nuse the same name for two different clusters and neither can reach the\nother's.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "volumes": [
+                    {
+                      "name": "pvc-9f2",
+                      "phase": "Bound",
+                      "handle": "a1b2c3",
+                      "claimNamespace": "acme-prod",
+                      "claimName": "data",
+                      "capacityGi": 100
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Volumes"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns the cluster's PersistentVolumes.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/configmaps": {
+      "get": {
+        "description": "Returns ConfigMaps, with their data.\n\nThe data travels because a ConfigMap is by definition not secret material. Secrets\nare a different kind and this API does not read one back, at all: an RPC that returns\na tenant's Secret is a credential-exfiltration endpoint however carefully it is\ngated, and material that needs protecting belongs in KMS.",
+        "operationId": "k8s_workloads_list_configmaps",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "configMaps": [
+                    {
+                      "namespace": "hanzo",
+                      "name": "cron-schedules",
+                      "data": {
+                        "nightly": "0 3 * * *"
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigMaps"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns ConfigMaps, with their data.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/deployments": {
+      "get": {
+        "description": "Returns Deployments with their live replica counts and the images\nthey are ACTUALLY running.\n\nThe running image is why this op exists rather than a read of the App CR: a CR's\nstatus does not surface the tag the pods are on, so the live Deployment is the only\nplace \"declared v1.4.2, running v1.4.1\" can be seen at all — which is the whole of\ndrift detection.",
+        "operationId": "k8s_workloads_list_deployments",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "example": "hanzo-k8s",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "example": "acme-prod",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "workloads": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api",
+                      "kind": "Deployment",
+                      "replicas": 3,
+                      "ready": 3,
+                      "updated": 3,
+                      "images": [
+                        "registry.hanzo.ai/acme/api:1.4.2"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Workloads"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns Deployments with their live replica counts and the images they are ACTUALLY running.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/deployments/{namespace}/{name}": {
+      "get": {
+        "description": "Returns one Deployment.",
+        "operationId": "k8s_workloads_get_deployment",
+        "parameters": [
+          {
+            "description": "Namespace is the object's namespace.",
+            "in": "path",
+            "name": "namespace",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name is the object's name.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Cluster is the registered cluster the object lives on.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "namespace": "acme-prod",
+                  "name": "api",
+                  "kind": "Deployment",
+                  "replicas": 3,
+                  "ready": 3,
+                  "updated": 3,
+                  "images": [
+                    "registry.hanzo.ai/acme/api:1.4.2"
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Workload"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns one Deployment.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/events": {
+      "get": {
+        "description": "Returns cluster events, oldest first.\n\nThis is the only place a failure with no pod behind it can be explained — an\nunschedulable workload, a quota refusal, a volume that never bound — because those\nproduce an event and nothing else. Events are ordered by last-seen so the tail is\nthe current situation.",
+        "operationId": "k8s_workloads_list_events",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "events": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api.17f",
+                      "type": "Warning",
+                      "reason": "FailedScheduling",
+                      "message": "0/6 nodes are available: insufficient nvidia.com/gpu",
+                      "object": "Pod/api-7d9f-2xk",
+                      "count": 4,
+                      "lastSeen": 1785110400
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Events"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns cluster events, oldest first.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/ingresses": {
+      "get": {
+        "description": "Returns Ingresses with the hosts they answer and which of those are\ncovered by TLS.\n\nThe two host lists are separate because a host in `hosts` but not in `tlsHosts` is a\npublic URL served over plain HTTP, which is a finding rather than a detail.",
+        "operationId": "k8s_workloads_list_ingresses",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "ingresses": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api",
+                      "hosts": [
+                        "api.acme.com"
+                      ],
+                      "tlsHosts": [
+                        "api.acme.com"
+                      ],
+                      "addresses": [
+                        "203.0.113.10"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Ingresses"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns Ingresses with the hosts they answer and which of those are covered by TLS.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/replicasets": {
+      "get": {
+        "description": "Returns ReplicaSets.\n\nA deploy tree needs them because they are the layer between a Deployment and its\npods: during a rollout two exist, and which pods belong to which is the difference\nbetween \"the new version is up\" and \"the old one still is\".",
+        "operationId": "k8s_workloads_list_replicasets",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "workloads": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api-7d9f",
+                      "kind": "ReplicaSet",
+                      "replicas": 3,
+                      "ready": 3,
+                      "owner": "Deployment/api"
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Workloads"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns ReplicaSets.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/services": {
+      "get": {
+        "description": "Returns Services with every identity by which one can be matched to the\nload balancer in front of it.\n\nBoth the cloud-controller's own annotation and the assigned addresses travel, and\neither match is enough. That breadth is the safe direction: matching MORE Services to\na balancer means fewer balancers look orphaned, and the consequence of a wrong match\nin the other direction is deleting a live one.",
+        "operationId": "k8s_workloads_list_services",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "services": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "api",
+                      "type": "LoadBalancer",
+                      "clusterIp": "10.3.0.7",
+                      "ips": [
+                        "203.0.113.10"
+                      ],
+                      "lbId": "a1b2",
+                      "ports": [
+                        443
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Services"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns Services with every identity by which one can be matched to the load balancer in front of it.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    },
+    "/v1/k8s/workloads/statefulsets": {
+      "get": {
+        "description": "Returns StatefulSets.\n\nThey are read separately from Deployments because they are a different lifetime: a\nStatefulSet's volumeClaimTemplates are immutable, so a storage change means\nrecreating the workload around the claims rather than patching it — and a board that\nfolded the two kinds together would offer an operation that cannot work.",
+        "operationId": "k8s_workloads_list_statefulsets",
+        "parameters": [
+          {
+            "description": "Cluster is the registered cluster to read.",
+            "in": "query",
+            "name": "cluster",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
+            "in": "query",
+            "name": "namespace",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "LabelSelector is a Kubernetes label selector, verbatim.",
+            "in": "query",
+            "name": "labelSelector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "workloads": [
+                    {
+                      "namespace": "acme-prod",
+                      "name": "pg",
+                      "kind": "StatefulSet",
+                      "replicas": 3,
+                      "ready": 3,
+                      "images": [
+                        "postgres:17"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Workloads"
+                }
+              }
+            },
+            "description": "ok"
+          }
+        },
+        "summary": "Returns StatefulSets.",
+        "tags": [
+          "k8s"
+        ]
+      }
+    }
+  }
+}

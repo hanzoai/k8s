@@ -1,0 +1,21 @@
+# Canonical CI/CD config for hanzoai/k8s — read by the hanzoai/ci reusable workflow
+# (.github/workflows/cicd.yml) and by platform.hanzo.ai.
+#
+# This is a zip PLUGIN, so it ships as a BINARY a running host installs and verifies by
+# digest, not as an image a cluster runs. There is no images: lane and no deploy: lane:
+# the composition that serves /v1/k8s is hanzoai/cloud's, and it installs this artifact
+# by URL + SHA-256 from the index published below.
+binaries:
+  - name: k8s
+    main: .
+    platforms: [linux/amd64, linux/arm64]
+
+test:
+  - name: go-test
+    # `make test`, never a bare `go test`: the target carries `go vet` and the four
+    # regeneration gates (declaration, OpenAPI, zipdoc, the op/plane bijection), and a
+    # bare run would skip every one of them while still exiting 0.
+    run: |
+      set -e
+      export GOPRIVATE='github.com/hanzoai/*' GOWORK=off
+      make test
