@@ -3,7 +3,7 @@ module github.com/hanzoai/k8s
 go 1.26.5
 
 require (
-	github.com/zap-proto/zip v1.20.0
+	github.com/zap-proto/zip v1.24.2
 	k8s.io/api v0.35.3
 	k8s.io/apimachinery v0.35.3
 	k8s.io/client-go v0.35.3
