@@ -1,5 +1,5 @@
 # Canonical CI/CD config for hanzoai/k8s — read by the hanzoai/ci reusable workflow
-# (.github/workflows/cicd.yml) and by platform.hanzo.ai.
+# (.hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
 #
 # This is a zip PLUGIN, so it ships as a BINARY a running host installs and verifies by
 # digest, not as an image a cluster runs. There is no images: lane and no deploy: lane:
