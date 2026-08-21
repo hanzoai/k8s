@@ -27,7 +27,7 @@ const lbIDAnnotation = "kubernetes.digitalocean.com/load-balancer-id"
 // drift detection.
 //
 // Example: {"cluster":"hanzo-k8s","namespace":"acme-prod"}
-// Response: {"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}]}
+// Response: {"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}]}
 func (o Ops) listDeployments(ctx context.Context, in *plane.Selector) (*plane.Workloads, error) {
 	b, err := o.reach(ctx, in.Cluster)
 	if err != nil {
@@ -52,7 +52,7 @@ func (o Ops) listDeployments(ctx context.Context, in *plane.Selector) (*plane.Wo
 
 // getDeployment returns one Deployment.
 //
-// Response: {"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}
+// Response: {"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}
 func (o Ops) getDeployment(ctx context.Context, in *plane.NamedIn) (*plane.Workload, error) {
 	if err := need("name", in.Name); err != nil {
 		return nil, err

@@ -131,7 +131,7 @@ func init() {
 			"PodsIn.nodeName":      "NodeName narrows to the pods on one node — the field-selector variant the\ndrain path needs, named rather than left to a raw selector string.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"acme-prod","labelSelector":"app=api"}`),
-		Response: json.RawMessage(`{"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["registry.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}`),
+		Response: json.RawMessage(`{"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["oci.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}`),
 	})
 	zip.Describe("GET /v1/k8s/pods/:namespace/:pod/logs", zip.Doc{
 		Description: "Returns what one container printed.\n\n`tailLines` is the bound a caller should set; without one the read is capped at one\nmebibyte and truncated from the FRONT, so the newest output — the part that\nexplains a crash — is what survives.",
@@ -155,7 +155,7 @@ func init() {
 			"ResourceIn.namespace":     "Namespace narrows to one namespace; empty means every namespace this\nregistration may address. Ignored for a cluster-scoped kind.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod"}`),
-		Response: json.RawMessage(`{"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}`),
+		Response: json.RawMessage(`{"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}`),
 	})
 	zip.Describe("GET /v1/k8s/resources/:kind/:namespace/:name", zip.Doc{
 		Description: "Returns one custom resource.",
@@ -166,7 +166,7 @@ func init() {
 			"ResourceRef.name":      "Name is the object's name.",
 			"ResourceRef.namespace": "Namespace is the object's namespace; empty for a cluster-scoped kind.",
 		},
-		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}`),
+		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}`),
 	})
 	zip.Describe("GET /v1/k8s/resources/watch", zip.Doc{
 		Description: "Returns what changed to one kind since a cursor.\n\nIt is a BOUNDED read rather than a stream, and that is a design decision worth\nstating: a stream cannot cross the call plane as a value, and rendering one —\nServer-Sent Events, a websocket — is the EDGE's concern. A consumer builds its own\nstream by calling this in a loop with the cursor it got back, so the streaming\nshape exists once, in the consumer that renders it, instead of once per transport.\n\n`expired` is the field that matters most. When the cursor is older than the\napiserver's history the watch cannot be resumed, and an empty page would look\nexactly like \"nothing changed\" — which is how a watch-backed board silently stops\nupdating for hours. On `expired` a caller must LIST again and take the new cursor.",
@@ -217,7 +217,7 @@ func init() {
 			"Selector.namespace":     "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"acme-prod"}`),
-		Response: json.RawMessage(`{"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}]}`),
+		Response: json.RawMessage(`{"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}]}`),
 	})
 	zip.Describe("GET /v1/k8s/workloads/deployments/:namespace/:name", zip.Doc{
 		Description: "Returns one Deployment.",
@@ -226,7 +226,7 @@ func init() {
 			"NamedIn.name":      "Name is the object's name.",
 			"NamedIn.namespace": "Namespace is the object's namespace.",
 		},
-		Response: json.RawMessage(`{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}`),
+		Response: json.RawMessage(`{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}`),
 	})
 	zip.Describe("GET /v1/k8s/workloads/events", zip.Doc{
 		Description: "Returns cluster events, oldest first.\n\nThis is the only place a failure with no pod behind it can be explained — an\nunschedulable workload, a quota refusal, a volume that never bound — because those\nproduce an event and nothing else. Events are ordered by last-seen so the tail is\nthe current situation.",
@@ -351,7 +351,7 @@ func init() {
 			"JobIn.serviceAccount": "ServiceAccount runs the pod as a named ServiceAccount.",
 			"JobIn.ttlSeconds":     "TTLSeconds deletes the finished Job after this long. Zero leaves it, which\non a busy namespace is how a Job list becomes unreadable.",
 		},
-		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=registry.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}`),
+		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=oci.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}`),
 		Response: json.RawMessage(`{"namespace":"hanzo","name":"build-1a2b","active":1,"succeeded":0,"failed":0,"phase":"running"}`),
 	})
 	zip.Describe("POST /k8s/jobs/get", zip.Doc{
@@ -453,7 +453,7 @@ func init() {
 			"PodsIn.nodeName":      "NodeName narrows to the pods on one node — the field-selector variant the\ndrain path needs, named rather than left to a raw selector string.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"acme-prod","labelSelector":"app=api"}`),
-		Response: json.RawMessage(`{"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["registry.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}`),
+		Response: json.RawMessage(`{"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["oci.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}`),
 	})
 	zip.Describe("POST /k8s/pods/logs", zip.Doc{
 		Description: "Returns what one container printed.\n\n`tailLines` is the bound a caller should set; without one the read is capped at one\nmebibyte and truncated from the FRONT, so the newest output — the part that\nexplains a crash — is what survives.",
@@ -478,8 +478,8 @@ func init() {
 			"ApplyIn.spec":      "Spec is the desired spec, applied whole.",
 			"Resource.version":  "Version is the object's resourceVersion — the cursor a Watch resumes from.",
 		},
-		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3}}`),
-		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}`),
+		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3}}`),
+		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}`),
 	})
 	zip.Describe("POST /k8s/resources/delete", zip.Doc{
 		Description: "Deletes one custom resource of a registered kind.\n\nDeleting an object is not deleting its data: a workload's App CR is desired state and\ncan be recreated freely, while the PersistentVolumeClaim it mounted holds the only\ncopy of the tenant's data and is a different lifetime. Nothing here deletes a claim.",
@@ -500,7 +500,7 @@ func init() {
 			"ResourceRef.name":      "Name is the object's name.",
 			"ResourceRef.namespace": "Namespace is the object's namespace; empty for a cluster-scoped kind.",
 		},
-		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}`),
+		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}`),
 	})
 	zip.Describe("POST /k8s/resources/list", zip.Doc{
 		Description: "Returns custom resources of one registered kind.",
@@ -512,7 +512,7 @@ func init() {
 			"ResourceIn.namespace":     "Namespace narrows to one namespace; empty means every namespace this\nregistration may address. Ignored for a cluster-scoped kind.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod"}`),
-		Response: json.RawMessage(`{"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}`),
+		Response: json.RawMessage(`{"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}`),
 	})
 	zip.Describe("POST /k8s/resources/watch", zip.Doc{
 		Description: "Returns what changed to one kind since a cursor.\n\nIt is a BOUNDED read rather than a stream, and that is a design decision worth\nstating: a stream cannot cross the call plane as a value, and rendering one —\nServer-Sent Events, a websocket — is the EDGE's concern. A consumer builds its own\nstream by calling this in a loop with the cursor it got back, so the streaming\nshape exists once, in the consumer that renders it, instead of once per transport.\n\n`expired` is the field that matters most. When the cursor is older than the\napiserver's history the watch cannot be resumed, and an empty page would look\nexactly like \"nothing changed\" — which is how a watch-backed board silently stops\nupdating for hours. On `expired` a caller must LIST again and take the new cursor.",
@@ -577,7 +577,7 @@ func init() {
 			"NamedIn.name":      "Name is the object's name.",
 			"NamedIn.namespace": "Namespace is the object's namespace.",
 		},
-		Response: json.RawMessage(`{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}`),
+		Response: json.RawMessage(`{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}`),
 	})
 	zip.Describe("POST /k8s/workloads/list-configmaps", zip.Doc{
 		Description: "Returns ConfigMaps, with their data.\n\nThe data travels because a ConfigMap is by definition not secret material. Secrets\nare a different kind and this API does not read one back, at all: an RPC that returns\na tenant's Secret is a credential-exfiltration endpoint however carefully it is\ngated, and material that needs protecting belongs in KMS.",
@@ -596,7 +596,7 @@ func init() {
 			"Selector.namespace":     "Namespace narrows to one namespace; empty means every namespace this\nregistration may address.",
 		},
 		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"acme-prod"}`),
-		Response: json.RawMessage(`{"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["registry.hanzo.ai/acme/api:1.4.2"]}]}`),
+		Response: json.RawMessage(`{"workloads":[{"namespace":"acme-prod","name":"api","kind":"Deployment","replicas":3,"ready":3,"updated":3,"images":["oci.hanzo.ai/acme/api:1.4.2"]}]}`),
 	})
 	zip.Describe("POST /k8s/workloads/list-events", zip.Doc{
 		Description: "Returns cluster events, oldest first.\n\nThis is the only place a failure with no pod behind it can be explained — an\nunschedulable workload, a quota refusal, a volume that never bound — because those\nproduce an event and nothing else. Events are ordered by last-seen so the tail is\nthe current situation.",
@@ -687,7 +687,7 @@ func init() {
 			"JobIn.serviceAccount": "ServiceAccount runs the pod as a named ServiceAccount.",
 			"JobIn.ttlSeconds":     "TTLSeconds deletes the finished Job after this long. Zero leaves it, which\non a busy namespace is how a Job list becomes unreadable.",
 		},
-		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=registry.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}`),
+		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=oci.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}`),
 		Response: json.RawMessage(`{"namespace":"hanzo","name":"build-1a2b","active":1,"succeeded":0,"failed":0,"phase":"running"}`),
 	})
 	zip.Describe("POST /v1/k8s/namespaces", zip.Doc{
@@ -746,7 +746,7 @@ func init() {
 			"ApplyIn.spec":      "Spec is the desired spec, applied whole.",
 			"Resource.version":  "Version is the object's resourceVersion — the cursor a Watch resumes from.",
 		},
-		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3}}`),
-		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}`),
+		Example:  json.RawMessage(`{"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3}}`),
+		Response: json.RawMessage(`{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}`),
 	})
 }

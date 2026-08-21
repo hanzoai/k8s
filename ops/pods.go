@@ -27,7 +27,7 @@ const maxLogBytes = 1 << 20
 // an exfiltration door wearing the name of a health check.
 //
 // Example: {"cluster":"hanzo-k8s","namespace":"acme-prod","labelSelector":"app=api"}
-// Response: {"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["registry.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}
+// Response: {"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["oci.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}
 func (o Ops) listPods(ctx context.Context, in *plane.PodsIn) (*plane.Pods, error) {
 	b, err := o.reach(ctx, in.Cluster)
 	if err != nil {

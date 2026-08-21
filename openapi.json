@@ -1328,7 +1328,7 @@
                 "image": "gcr.io/kaniko-project/executor:latest",
                 "args": [
                   "--context=git://…",
-                  "--destination=registry.hanzo.ai/acme/api:1.4.2"
+                  "--destination=oci.hanzo.ai/acme/api:1.4.2"
                 ],
                 "ttlSeconds": 3600
               },
@@ -1871,7 +1871,7 @@
                       "node": "pool-a1",
                       "controller": "ReplicaSet/api-7d9f",
                       "images": [
-                        "registry.hanzo.ai/acme/api:1.4.2"
+                        "oci.hanzo.ai/acme/api:1.4.2"
                       ],
                       "restarts": 0
                     }
@@ -2023,7 +2023,7 @@
                       "namespace": "acme-prod",
                       "name": "api",
                       "spec": {
-                        "image": "registry.hanzo.ai/acme/api:1.4.2"
+                        "image": "oci.hanzo.ai/acme/api:1.4.2"
                       },
                       "status": {
                         "phase": "Running"
@@ -2058,7 +2058,7 @@
                 "namespace": "acme-prod",
                 "name": "api",
                 "spec": {
-                  "image": "registry.hanzo.ai/acme/api:1.4.2",
+                  "image": "oci.hanzo.ai/acme/api:1.4.2",
                   "replicas": 3
                 }
               },
@@ -2078,7 +2078,7 @@
                   "namespace": "acme-prod",
                   "name": "api",
                   "spec": {
-                    "image": "registry.hanzo.ai/acme/api:1.4.2",
+                    "image": "oci.hanzo.ai/acme/api:1.4.2",
                     "replicas": 3
                   },
                   "version": "918281"
@@ -2300,7 +2300,7 @@
                   "namespace": "acme-prod",
                   "name": "api",
                   "spec": {
-                    "image": "registry.hanzo.ai/acme/api:1.4.2"
+                    "image": "oci.hanzo.ai/acme/api:1.4.2"
                   },
                   "status": {
                     "phase": "Running"
@@ -2644,7 +2644,7 @@
                       "ready": 3,
                       "updated": 3,
                       "images": [
-                        "registry.hanzo.ai/acme/api:1.4.2"
+                        "oci.hanzo.ai/acme/api:1.4.2"
                       ]
                     }
                   ]
@@ -2708,7 +2708,7 @@
                   "ready": 3,
                   "updated": 3,
                   "images": [
-                    "registry.hanzo.ai/acme/api:1.4.2"
+                    "oci.hanzo.ai/acme/api:1.4.2"
                   ]
                 },
                 "schema": {

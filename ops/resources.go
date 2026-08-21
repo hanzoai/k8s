@@ -94,7 +94,7 @@ func gvr(kind string) (schema.GroupVersionResource, error) {
 // listResources returns custom resources of one registered kind.
 //
 // Example: {"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod"}
-// Response: {"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}
+// Response: {"resources":[{"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}],"version":"918273"}
 func (o Ops) listResources(ctx context.Context, in *plane.ResourceIn) (*plane.Resources, error) {
 	g, err := gvr(in.Kind)
 	if err != nil {
@@ -127,7 +127,7 @@ func (o Ops) listResources(ctx context.Context, in *plane.ResourceIn) (*plane.Re
 
 // getResource returns one custom resource.
 //
-// Response: {"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}
+// Response: {"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2"},"status":{"phase":"Running"},"version":"918273"}
 func (o Ops) getResource(ctx context.Context, in *plane.ResourceRef) (*plane.Resource, error) {
 	g, err := gvr(in.Kind)
 	if err != nil {
@@ -245,8 +245,8 @@ func (o Ops) watchResources(ctx context.Context, in *plane.WatchIn) (*plane.Chan
 // both are named and typed. That is the line: `kind` is a key in a closed table, so
 // this cannot become "apply any object the cluster has".
 //
-// Example: {"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3}}
-// Response: {"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"registry.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}
+// Example: {"cluster":"hanzo-k8s","kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3}}
+// Response: {"kind":"App","namespace":"acme-prod","name":"api","spec":{"image":"oci.hanzo.ai/acme/api:1.4.2","replicas":3},"version":"918281"}
 func (o Ops) applyResource(ctx context.Context, in *plane.ApplyIn) (*plane.Resource, error) {
 	g, err := gvr(in.Kind)
 	if err != nil {

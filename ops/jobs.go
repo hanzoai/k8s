@@ -27,7 +27,7 @@ import (
 // setting on anything periodic — a namespace that keeps every finished Job becomes a
 // list nobody can read.
 //
-// Example: {"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=registry.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}
+// Example: {"cluster":"hanzo-k8s","namespace":"hanzo","name":"build-1a2b","image":"gcr.io/kaniko-project/executor:latest","args":["--context=git://…","--destination=oci.hanzo.ai/acme/api:1.4.2"],"ttlSeconds":3600}
 // Response: {"namespace":"hanzo","name":"build-1a2b","active":1,"succeeded":0,"failed":0,"phase":"running"}
 func (o Ops) createJob(ctx context.Context, in *plane.JobIn) (*plane.Job, error) {
 	if err := need("name", in.Name); err != nil {
