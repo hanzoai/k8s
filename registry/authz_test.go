@@ -250,7 +250,7 @@ func TestOrgHeaderWithoutPrincipalIsRefused(t *testing.T) {
 func TestClusterNameCannotEscapeItsRef(t *testing.T) {
 	// A cluster name becomes a KMS ref segment, so a name containing a separator or a
 	// parent reference would address material outside the org's own prefix. This is the
-	// one place a name is checked, and Register is the only door it comes through.
+	// one place a name is checked, and Register is the only function it arrives through.
 	for _, bad := range []string{
 		"../alpha/prod", "a/b", "prod/../../alpha", ".", "..", "-prod", "prod-",
 		"Prod", "pro d", "", strings.Repeat("p", MaxNameLen+1),

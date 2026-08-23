@@ -1,7 +1,7 @@
 // Package ops is the /v1/k8s surface: one named, typed operation per thing this
 // deployment may do to a Kubernetes cluster, and nothing else.
 //
-// # Every op names its cluster, and Reach is the only door
+// # Every op names its cluster, and Reach is the only entry point
 //
 // Not one handler here constructs a Kubernetes client. Each one calls
 // registry.Registry.Reach with the cluster the caller named, and Reach is the

@@ -1815,7 +1815,7 @@
     },
     "/v1/k8s/pods": {
       "get": {
-        "description": "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration door wearing the name of a health check.",
+        "description": "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration endpoint wearing the name of a health check.",
         "operationId": "k8s_pods_list",
         "parameters": [
           {

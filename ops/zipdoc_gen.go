@@ -123,7 +123,7 @@ func init() {
 		Response: json.RawMessage(`{"volumes":[{"namespace":"acme","name":"data","usedBytes":48318382080}],"nodesRead":6,"nodesTotal":6}`),
 	})
 	zip.Describe("GET /v1/k8s/pods", zip.Doc{
-		Description: "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration door wearing the name of a health check.",
+		Description: "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration endpoint wearing the name of a health check.",
 		Fields: map[string]string{
 			"PodsIn.cluster":       "Cluster is the registered cluster to read.",
 			"PodsIn.labelSelector": "LabelSelector is a Kubernetes label selector, verbatim.",
@@ -445,7 +445,7 @@ func init() {
 		Response: json.RawMessage(`{"volumes":[{"namespace":"acme","name":"data","usedBytes":48318382080}],"nodesRead":6,"nodesTotal":6}`),
 	})
 	zip.Describe("POST /k8s/pods/list", zip.Doc{
-		Description: "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration door wearing the name of a health check.",
+		Description: "Returns pods, narrowed by namespace, labels or node.\n\nOne op covers every way the fleet asks for pods: the whole-cluster sweep an\ninfrastructure board takes, the label-selected set that answers \"is this app's\nworkload up\", and the single-node set a drain needs. They were three call sites\nwith three shapes; the difference between them is which argument is set.\n\nContainer ENV is deliberately absent from the projection. A pod spec carries the\nsecret material injected into it, so a read surface that returned the spec would be\nan exfiltration endpoint wearing the name of a health check.",
 		Fields: map[string]string{
 			"PodsIn.cluster":       "Cluster is the registered cluster to read.",
 			"PodsIn.labelSelector": "LabelSelector is a Kubernetes label selector, verbatim.",

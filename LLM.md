@@ -47,7 +47,7 @@ Cluster{Name, Org, Provider, Endpoint, Nodes, NvidiaGPU, AmdGPU, Namespaces, Reg
 - **`Namespaces`** bounds a registration made with a scoped credential on a shared cluster.
   Empty means the whole cluster, which is what an org registering its own cluster gets.
 
-`registry.Reach(ctx, name) (*Bound, error)` is the only door:
+`registry.Reach(ctx, name) (*Bound, error)` is the only entry point:
 
 1. `Tenant(ctx)` — zip's full rule (validated user claim, non-empty org, under
    `MaxOrgLen`) plus one thing zip cannot know: the org becomes a KMS ref segment, so a

@@ -24,7 +24,7 @@ const maxLogBytes = 1 << 20
 //
 // Container ENV is deliberately absent from the projection. A pod spec carries the
 // secret material injected into it, so a read surface that returned the spec would be
-// an exfiltration door wearing the name of a health check.
+// an exfiltration endpoint wearing the name of a health check.
 //
 // Example: {"cluster":"hanzo-k8s","namespace":"acme-prod","labelSelector":"app=api"}
 // Response: {"pods":[{"namespace":"acme-prod","name":"api-7d9f-2xk","phase":"Running","node":"pool-a1","controller":"ReplicaSet/api-7d9f","images":["oci.hanzo.ai/acme/api:1.4.2"],"restarts":0}]}

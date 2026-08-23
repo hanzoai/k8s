@@ -1,5 +1,5 @@
 // Package registry is the cluster registry — the core model of this app and the
-// only door to a Kubernetes apiserver in this program.
+// only way to reach a Kubernetes apiserver in this program.
 //
 // A cluster is a REGISTERED ENTITY: a name, a provider, an endpoint, a credential
 // ref in KMS, and the org that owns it. Every operation NAMES its cluster, and

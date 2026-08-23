@@ -346,7 +346,7 @@ type PodsIn struct {
 
 // Pod is one pod, projected to placement, health, what it mounts and what it
 // runs. Container ENV is deliberately absent: a pod spec carries injected
-// secret material, and a read surface that returns it is an exfiltration door.
+// secret material, and a read surface that returns it is an exfiltration endpoint.
 type Pod struct {
 	Namespace  string   `json:"namespace"`
 	Name       string   `json:"name"`
