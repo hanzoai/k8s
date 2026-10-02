@@ -13,7 +13,10 @@ import (
 
 // evict drops what the node keeps only to save a download or a rebuild.
 func evict(ctx context.Context, log *slog.Logger) {
-	step(ctx, log, "images", "/usr/local/bin/crictl", "rmi", "--prune")
+	// crictl gives each request two seconds by default, and removing an image's
+	// layers takes longer than that: the prune reported DeadlineExceeded while
+	// containerd went on deleting.
+	step(ctx, log, "images", "/usr/local/bin/crictl", "--timeout=5m", "rmi", "--prune")
 	step(ctx, log, "journal", "/usr/bin/journalctl", "--vacuum-size=256M")
 	log.Info("evict tmp", "bytes", sweep(host+"/tmp", day, plainFiles))
 	for _, c := range caches(host) {
