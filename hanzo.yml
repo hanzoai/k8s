@@ -1,14 +1,27 @@
 # Canonical CI/CD config for hanzoai/k8s — read by the hanzoai/ci reusable workflow
 # (.hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
 #
-# This is a zip PLUGIN, so it ships as a BINARY a running host installs and verifies by
-# digest, not as an image a cluster runs. There is no images: lane and no deploy: lane:
-# the composition that serves /v1/k8s is hanzoai/cloud's, and it installs this artifact
-# by URL + SHA-256 from the index published below.
+# The k8s service is a zip PLUGIN, so it ships as a BINARY a running host installs and
+# verifies by digest, not as an image a cluster runs: the composition that serves
+# /v1/k8s is hanzoai/cloud's, and it installs this artifact by URL + SHA-256 from the
+# index published below.
+#
+# disk/ is the one image: the node agent that keeps every node's disks from filling,
+# run as a DaemonSet (universe infra/aws/k8s/disk.yaml). Its own module, standard
+# library only, so the plugin's gates and graph never see it.
 binaries:
   - name: k8s
     main: .
     platforms: [linux/amd64, linux/arm64]
+
+images:
+  - name: disk
+    context: disk
+    dockerfile: disk/Dockerfile
+    repo: ghcr.io/hanzoai/disk
+    platforms:
+      - linux/amd64
+      - linux/arm64
 
 test:
   - name: go-test
@@ -19,3 +32,9 @@ test:
       set -e
       export GOPRIVATE='github.com/hanzoai/*' GOWORK=off
       make test
+  - name: disk
+    run: |
+      set -e
+      cd disk
+      GOWORK=off go vet ./...
+      GOWORK=off go test ./... -count=1
